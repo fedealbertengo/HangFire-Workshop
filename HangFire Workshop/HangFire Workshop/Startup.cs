@@ -1,5 +1,4 @@
 using Hangfire;
-using HangFire_Workshop.Data;
 using HangFire_Workshop.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +25,16 @@ namespace HangFire_Workshop
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -37,12 +46,7 @@ namespace HangFire_Workshop
 
             app.UseHangfireDashboard();
 
-            //Tareas programadas
-            backgroundJobClient.Enqueue(() => Console.WriteLine("Holaa")); //Para ejecutar el job instantaneamente
-            backgroundJobClient.Schedule(() => Console.WriteLine("Saludos, con delay"), TimeSpan.FromSeconds(30)); //Para ejecutar el job a cierta fecha y hora
-
-            //Tareas recurrentes
-            recurringJobManager.AddOrUpdate("Tarea recurrente cada minuto", () => Console.WriteLine("Se ejecuto la tarea recurrente."), Cron.Minutely); //Para ejecutar una tarea recurrente
+            HangFireJobsManager.InitializeJobs(backgroundJobClient, recurringJobManager);
         }
     }
 }
