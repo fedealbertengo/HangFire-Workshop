@@ -14,7 +14,7 @@
         {
             this.MailApiKey = "4511574b30ea4db9050ef7c080fac7a9";
             this.MailApiSecret = "815f0bd3a7d267bcbc58cfb6638603f8";
-            this.MailMessageFromEmail = "federico.albertengo@concentrix.com";
+            this.MailMessageFromEmail = "hangfireworkshop@gmail.com";
             this.MailMessageFromName = "HangFire Workshop";
         }
     }
